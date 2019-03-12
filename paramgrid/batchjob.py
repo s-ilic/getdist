@@ -7,8 +7,8 @@ import copy
 import sys
 import time
 import six
-from getdist import types, IniFile
-from getdist.mcsamples import loadMCSamples
+from my_getdist import types, IniFile
+from my_getdist.mcsamples import loadMCSamples
 
 
 def resetGrid(directory):
@@ -441,14 +441,14 @@ class batchJob(propertiesItem):
         self.commonPath = self.basePath + iniDir
         self.subBatches = []
         self.jobItems = None
-        self.getdist_options = {}
+        self.my_getdist_options = {}
 
     def propertiesIniFile(self):
         return os.path.join(self.batchPath, 'config', 'config.ini')
 
     def makeItems(self, settings, messages=True):
         self.jobItems = []
-        self.getdist_options = getattr(settings, 'getdist_options', self.getdist_options)
+        self.my_getdist_options = getattr(settings, 'my_getdist_options', self.my_getdist_options)
         allImportance = getattr(settings, 'importanceRuns', [])
         for group in settings.groups:
             for data_set in group.datasets:

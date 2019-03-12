@@ -4,7 +4,7 @@ import os
 import copy
 import sys
 import six
-from getdist import IniFile
+from my_getdist import IniFile
 from paramgrid import batchjob, batchjob_args
 
 default_params = dict()

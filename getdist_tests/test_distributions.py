@@ -1,8 +1,8 @@
 from __future__ import print_function
-import getdist.plots as plots
+import my_getdist.plots as plots
 import matplotlib.pyplot as plt
 import numpy as np
-from getdist.gaussian_mixtures import Mixture2D, Mixture1D, Gaussian1D, Gaussian2D, make_2D_Cov
+from my_getdist.gaussian_mixtures import Mixture2D, Mixture1D, Gaussian1D, Gaussian2D, make_2D_Cov
 
 default_nsamp = 10000
 
@@ -261,7 +261,7 @@ def run_test_program():
     import time
     import argparse
 
-    parser = argparse.ArgumentParser(description='make getdist test plots from test Gaussian mixture distributions')
+    parser = argparse.ArgumentParser(description='make my_getdist test plots from test Gaussian mixture distributions')
     parser.add_argument('--sims', type=int, default=100, help='Number of simulations per case')
     parser.add_argument('--nsamp', type=int, default=10000, help='Number of (independent) samples per simulation')
     parser.add_argument('--plots', nargs='*', default=['dists_1D', 'dists_2D'], help='names of plots to make')

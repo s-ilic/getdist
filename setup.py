@@ -12,7 +12,7 @@ except ImportError:
 
 
 def find_version():
-    version_file = io.open(os.path.join(os.path.dirname(__file__), 'getdist/__init__.py')).read()
+    version_file = io.open(os.path.join(os.path.dirname(__file__), 'my_getdist/__init__.py')).read()
     version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", version_file, re.M)
     if version_match:
         return version_match.group(1)
@@ -32,11 +32,11 @@ setup(name='GetDist',
       description='GetDist Monte Carlo sample analysis, plotting and GUI',
       long_description=get_long_description(),
       author='Antony Lewis',
-      url="https://github.com/cmbant/getdist",
-      packages=['getdist', 'getdist.gui', 'paramgrid', 'getdist_tests'],
+      url="https://github.com/cmbant/my_getdist",
+      packages=['my_getdist', 'my_getdist.gui', 'paramgrid', 'my_getdist_tests'],
       scripts=['GetDist.py', 'GetDistGUI.py'],
-      test_suite='getdist_tests',
-      package_data={'getdist': ['analysis_defaults.ini', 'distparam_template.ini']},
+      test_suite='my_getdist_tests',
+      package_data={'my_getdist': ['analysis_defaults.ini', 'distparam_template.ini']},
       install_requires=[
           'packaging',
           'numpy',

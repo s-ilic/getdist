@@ -4,9 +4,9 @@ from __future__ import absolute_import
 from __future__ import print_function
 import os
 import subprocess
-import getdist
+import my_getdist
 import io
-from getdist import MCSamples, chains, IniFile
+from my_getdist import MCSamples, chains, IniFile
 
 
 def runScript(fname):
@@ -30,7 +30,7 @@ def main(args):
     if not '.ini' in args.ini_file and chain_root is None:
         # use default settings acting on chain_root, no plots
         chain_root = args.ini_file
-        args.ini_file = getdist.default_getdist_settings
+        args.ini_file = my_getdist.default_my_getdist_settings
         no_plots = True
     if not os.path.isfile(args.ini_file):
         doError('Parameter file does not exist: ' + args.ini_file)
@@ -71,7 +71,7 @@ def main(args):
 
     if ini.bool('adjust_priors', False) or ini.bool('map_params', False):
         doError(
-            'To adjust priors or define new parameters, use a separate python script; see the python getdist docs for examples')
+            'To adjust priors or define new parameters, use a separate python script; see the python my_getdist docs for examples')
 
     plot_ext = ini.string('plot_ext', 'py')
     finish_run_command = ini.string('finish_run_command', '')
@@ -350,11 +350,11 @@ if __name__ == '__main__':
     parser.add_argument('--make_param_file',
                         help='Produce a sample distparams.ini file that you can edit and use when running GetDist')
     parser.add_argument('--make_plots', action='store_true', help='Make PDFs from any requested plot script files')
-    parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + getdist.__version__)
+    parser.add_argument('-V', '--version', action='version', version='%(prog)s ' + my_getdist.__version__)
     args = parser.parse_args()
     if args.make_param_file:
-        content = io.open(getdist.distparam_template).read()
-        analysis = io.open(getdist.default_getdist_settings).read()
+        content = io.open(my_getdist.distparam_template).read()
+        analysis = io.open(my_getdist.default_my_getdist_settings).read()
         content = content.replace('%%%ANALYSIS_DEFAULTS%%%', analysis)
         with io.open(args.make_param_file, 'w') as f:
             f.write(content)

@@ -9,7 +9,7 @@ except ImportError:
         'Install scipy version 11 or higher (or e.g. module load python 2.7.5 or higher which is likely linked to later scipy)')
     raise
 
-from getdist.convolve import dct2d
+from my_getdist.convolve import dct2d
 import logging
 
 """

@@ -7,9 +7,9 @@ import numpy as np
 import unittest
 import subprocess
 import shutil
-from getdist import loadMCSamples, plots, IniFile
-from getdist_tests.test_distributions import Test2DDistributions, Gaussian1D, Gaussian2D
-from getdist.mcsamples import MCSamples
+from my_getdist import loadMCSamples, plots, IniFile
+from my_getdist_tests.test_distributions import Test2DDistributions, Gaussian1D, Gaussian2D
+from my_getdist.mcsamples import MCSamples
 
 
 class GetDistFileTest(unittest.TestCase):
@@ -100,7 +100,7 @@ class GetDistFileTest(unittest.TestCase):
 
 
 class GetDistTest(unittest.TestCase):
-    """test some getdist routines and plotting"""
+    """test some my_getdist routines and plotting"""
 
     def setUp(self):
         np.random.seed(10)
@@ -165,7 +165,7 @@ class GetDistTest(unittest.TestCase):
         self.assertAlmostEqual(mean, meanChains)
 
     def testMixtures(self):
-        from getdist.gaussian_mixtures import Mixture2D, GaussianND
+        from my_getdist.gaussian_mixtures import Mixture2D, GaussianND
 
         cov1 = [[0.001 ** 2, 0.0006 * 0.05], [0.0006 * 0.05, 0.05 ** 2]]
         cov2 = [[0.01 ** 2, -0.005 * 0.03], [-0.005 * 0.03, 0.03 ** 2]]

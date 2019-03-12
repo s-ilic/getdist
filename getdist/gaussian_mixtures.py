@@ -1,8 +1,8 @@
 from __future__ import absolute_import
 import numpy as np
-from getdist.densities import Density1D, Density2D
-from getdist.paramnames import ParamNames
-from getdist.mcsamples import MCSamples
+from my_getdist.densities import Density1D, Density2D
+from my_getdist.paramnames import ParamNames
+from my_getdist.mcsamples import MCSamples
 import six
 
 

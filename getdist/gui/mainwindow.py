@@ -14,10 +14,10 @@ import six
 from collections import OrderedDict
 from .qt_import import pyside_version
 
-import getdist
-from getdist import plots, IniFile
-from getdist.mcsamples import GetChainRootFiles, SettingError, ParamError
-from getdist.gui.SyntaxHighlight import PythonHighlighter
+import my_getdist
+from my_getdist import plots, IniFile
+from my_getdist.mcsamples import GetChainRootFiles, SettingError, ParamError
+from my_getdist.gui.SyntaxHighlight import PythonHighlighter
 
 import matplotlib.pyplot as plt
 
@@ -51,9 +51,9 @@ try:
 
     try:
         if pyside_version == 2:
-            import getdist.gui.Resources_pyside2
+            import my_getdist.gui.Resources_pyside2
         else:
-            import getdist.gui.Resources_pyside
+            import my_getdist.gui.Resources_pyside
     except ImportError:
         print("Missing Resources_pyside.py: Run script update_resources.sh")
 except ImportError:
@@ -109,7 +109,7 @@ class MainWindow(QMainWindow):
         self.base_dir = base_dir
 
         self.orig_rc = matplotlib.rcParams.copy()
-        self.plot_module = 'getdist.plots'
+        self.plot_module = 'my_getdist.plots'
         self.script_plot_module = self.plot_module
 
         # GUI setup
@@ -134,7 +134,7 @@ class MainWindow(QMainWindow):
         signal.signal(signal.SIGINT, signal.SIG_DFL)
 
         # Path for .ini file
-        self.iniFile = ini or getdist.default_getdist_settings
+        self.iniFile = ini or my_getdist.default_my_getdist_settings
 
         # Path of root directory
         self.rootdirname = None
@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
         self.optionsAct = QAction(QIcon(""),
                                   "Analysis settings", self,
                                   shortcut="",
-                                  statusTip="Show settings for getdist and plot densities",
+                                  statusTip="Show settings for my_getdist and plot densities",
                                   triggered=self.showSettings)
 
         self.plotOptionsAct = QAction(QIcon(""),
@@ -505,7 +505,7 @@ class MainWindow(QMainWindow):
         event.accept()
 
     def getSettings(self):
-        return QSettings('getdist', 'gui')
+        return QSettings('my_getdist', 'gui')
 
     def readSettings(self):
         settings = self.getSettings()
@@ -800,7 +800,7 @@ class MainWindow(QMainWindow):
         """
         QMessageBox.about(
             self, "About GetDist GUI",
-            "GetDist GUI v " + getdist.__version__ + "\nhttps://github.com/cmbant/getdist/\n" +
+            "GetDist GUI v " + my_getdist.__version__ + "\nhttps://github.com/cmbant/my_getdist/\n" +
             "\nPython: " + sys.version +
             "\nMatplotlib: " + matplotlib.__version__ +
             "\nSciPy: " + scipy.__version__ +
@@ -1277,7 +1277,7 @@ class MainWindow(QMainWindow):
             if len(chain_dirs) == 1:
                 chain_dirs = "r'%s'" % chain_dirs[0].rstrip('\\').rstrip('/')
 
-            if isinstance(self.iniFile, six.string_types) and self.iniFile != getdist.default_getdist_settings:
+            if isinstance(self.iniFile, six.string_types) and self.iniFile != my_getdist.default_my_getdist_settings:
                 script += "g=gplot.%s(chain_dir=%s, analysis_settings=r'%s')\n" % (plot_func, chain_dirs, self.iniFile)
             elif isinstance(self.iniFile, IniFile):
                 script += "g=gplot.%s(chain_dir=%s,analysis_settings=analysis_settings)\n" % (plot_func, chain_dirs)
@@ -1809,7 +1809,7 @@ class DialogSettings(QDialog):
         self.table.setSelectionMode(QAbstractItemView.SingleSelection)
 
         if items is None:
-            names = IniFile(getdist.default_getdist_settings)
+            names = IniFile(my_getdist.default_my_getdist_settings)
             items = []
             self.ini = ini
             for key in ini.readOrder:

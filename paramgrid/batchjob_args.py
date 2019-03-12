@@ -66,7 +66,7 @@ class batchArgs(object):
                                      help='only include chains where all N chains don\'t already exist on disk')
         if self.doplots:
             self.parser.add_argument('--plot_data', nargs='*', default=None,
-                                     help='directory/ies containing getdist output plot_data')
+                                     help='directory/ies containing my_getdist output plot_data')
             self.parser.add_argument('--paramNameFile', default='clik_latex.paramnames',
                                      help=".paramnames file for custom labels for parameters")
             self.parser.add_argument('--paramList', default=None,
@@ -81,8 +81,8 @@ class batchArgs(object):
             self.batch = batchjob.readobject(args.batchPath)
             if self.batch is None: raise Exception('batchPath %s does not exist or is not initialized with makeGrid.py'%args.batchPath)
             if self.doplots:
-                import getdist.plots as plots
-                from getdist import paramnames
+                import my_getdist.plots as plots
+                from my_getdist import paramnames
 
                 if args.paramList is not None: args.paramList = paramnames.ParamNames(args.paramList)
                 if args.plot_data is not None:

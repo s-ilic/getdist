@@ -12,12 +12,12 @@ from matplotlib import cm, rcParams
 import matplotlib.pyplot as plt
 import numpy as np
 from paramgrid import gridconfig, batchjob
-import getdist
-from getdist import MCSamples, loadMCSamples, ParamNames, ParamInfo, IniFile
-from getdist.paramnames import escapeLatex, makeList, mergeRenames
-from getdist.parampriors import ParamBounds
-from getdist.densities import Density1D, Density2D
-from getdist.gaussian_mixtures import MixtureND
+import my_getdist
+from my_getdist import MCSamples, loadMCSamples, ParamNames, ParamInfo, IniFile
+from my_getdist.paramnames import escapeLatex, makeList, mergeRenames
+from my_getdist.parampriors import ParamBounds
+from my_getdist.densities import Density1D, Density2D
+from my_getdist.gaussian_mixtures import MixtureND
 import logging
 
 """Plotting scripts for GetDist outputs"""
@@ -198,7 +198,7 @@ def getPlotter(**kwargs):
     """
     Creates a new plotter and returns it
 
-    :param kwargs: arguments for :class:`~getdist.plots.GetDistPlotter`
+    :param kwargs: arguments for :class:`~my_getdist.plots.GetDistPlotter`
     :return: The :class:`GetDistPlotter` instance
     """
     return GetDistPlotter(**kwargs)
@@ -212,7 +212,7 @@ def getSinglePlotter(ratio=3 / 4., width_inch=6, **kwargs):
 
     Use this or :func:`~getSubplotPlotter` to make a :class:`~.plots.GetDistPlotter` instance for making plots.
     If you want customized sizes or styles for all plots, you can make a new module
-    defining these functions, and then use it exactly as a replacement for getdist.plots.
+    defining these functions, and then use it exactly as a replacement for my_getdist.plots.
 
     :param ratio: The ratio between height and width.
     :param width_inch:  The width of the plot in inches
@@ -235,7 +235,7 @@ def getSubplotPlotter(subplot_size=2, width_inch=None, **kwargs):
 
     Use this or :func:`~getSinglePlotter` to make a :class:`~.plots.GetDistPlotter` instance for making plots.
     If you want customized sizes or styles for all plots, you can make a new module
-    defining these functions, and then use it exactly as a replacement for getdist.plots.
+    defining these functions, and then use it exactly as a replacement for my_getdist.plots.
 
     :param subplot_size: The size of each subplot in inches
     :param width_inch: Optional total width in inches
@@ -394,10 +394,10 @@ class MCSampleAnalysis(object):
                 batch = batchjob.readobject(chain_dir)
             self.chain_dirs.append(batch)
             # this gets things like specific parameter limits etc. specific to the grid
-            # yuk, this should only be for old Planck grids. New ones don't need getdist_common
+            # yuk, this should only be for old Planck grids. New ones don't need my_getdist_common
             # should instead set custom settings in the grid setting file
-            if os.path.exists(batch.commonPath + 'getdist_common.ini'):
-                batchini = IniFile(batch.commonPath + 'getdist_common.ini')
+            if os.path.exists(batch.commonPath + 'my_getdist_common.ini'):
+                batchini = IniFile(batch.commonPath + 'my_getdist_common.ini')
                 if self.ini:
                     self.ini.params.update(batchini.params)
                 else:
@@ -417,10 +417,10 @@ class MCSampleAnalysis(object):
         if isinstance(settings, IniFile):
             ini = settings
         elif isinstance(settings, dict):
-            ini = IniFile(getdist.default_getdist_settings)
+            ini = IniFile(my_getdist.default_my_getdist_settings)
             ini.params.update(settings)
         else:
-            ini = IniFile(settings or getdist.default_getdist_settings)
+            ini = IniFile(settings or my_getdist.default_my_getdist_settings)
         if self.ini:
             self.ini.params.update(ini.params)
         else:
@@ -462,8 +462,8 @@ class MCSampleAnalysis(object):
                     jobItem = chain_dir.resolveRoot(root)
                     if jobItem:
                         file_root = jobItem.chainRoot
-                        if hasattr(chain_dir, 'getdist_options'):
-                            dist_settings.update(chain_dir.getdist_options)
+                        if hasattr(chain_dir, 'my_getdist_options'):
+                            dist_settings.update(chain_dir.my_getdist_options)
                         dist_settings.update(jobItem.dist_settings)
                         break
                 else:
@@ -633,7 +633,7 @@ class GetDistPlotter(object):
             self.settings = copy.deepcopy(defaultSettings)
         else:
             self.settings = settings
-        if chain_dir is None and plot_data is None: chain_dir = getdist.default_grid_root
+        if chain_dir is None and plot_data is None: chain_dir = my_getdist.default_grid_root
         if isinstance(plot_data, six.string_types):
             self.plot_data = [plot_data]
         else:
@@ -665,7 +665,7 @@ class GetDistPlotter(object):
         print('Python version:', sys.version)
         print('\nMatplotlib version:', matplotlib.__version__)
         print('\nGetDist Plot Settings:')
-        print('GetDist version:', getdist.__version__)
+        print('GetDist version:', my_getdist.__version__)
         sets = self.settings.__dict__
         for key, value in list(sets.items()):
             print(key, ':', value)
@@ -1150,7 +1150,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSinglePlotter(width_inch = 4)
             g.plot_2d([samples1,samples2], 'x1', 'x2', filled=True);
@@ -1233,7 +1233,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=2, nMCSamples=2)
             g = plots.getSinglePlotter(width_inch=4)
             g.plot_2d([samples1, samples2], ['x0','x1'], filled=False);
@@ -1259,7 +1259,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples= gaussian_mixtures.randomTestMCSamples(ndim=2, nMCSamples=1)
             g = plots.getSinglePlotter(width_inch=4)
             g.plot_2d(samples, ['x0','x1'], filled=True);
@@ -1397,7 +1397,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=2, nMCSamples=2)
             g = plots.getSinglePlotter(width_inch=4)
             g.plot_1d([samples1, samples2], 'x0', marker=0)
@@ -1405,7 +1405,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=2, nMCSamples=2)
             g = plots.getSinglePlotter(width_inch=3)
             g.plot_1d([samples1, samples2], 'x0', normalized=True, colors=['green','black'])
@@ -1733,7 +1733,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSubplotPlotter()
             g.plots_1d([samples1, samples2], ['x0', 'x1', 'x2'], nx=3, share_y=True, legend_ncol =2,
@@ -1793,7 +1793,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSubplotPlotter(subplot_size=4)
             g.settings.legend_frac_subplot_margin = 0.05
@@ -1950,7 +1950,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSubplotPlotter()
             g.triangle_plot([samples1, samples2], filled=True, legend_labels = ['Contour 1', 'Contour 2'])
@@ -1958,7 +1958,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSubplotPlotter()
             g.triangle_plot([samples1, samples2], ['x0','x1','x2'], plot_3d_with_param='x3')
@@ -2134,7 +2134,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=4, nMCSamples=2)
             g = plots.getSubplotPlotter()
             g.rectangle_plot(['x0','x1'], ['x2','x3'], roots = [samples1, samples2], filled=True)
@@ -2420,7 +2420,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=3, nMCSamples=2)
             g = plots.getSinglePlotter(width_inch=4)
             g.plot_3d([samples1, samples2], ['x0','x1','x2']);
@@ -2466,7 +2466,7 @@ class GetDistPlotter(object):
         .. plot::
            :include-source:
 
-            from getdist import plots, gaussian_mixtures
+            from my_getdist import plots, gaussian_mixtures
             samples1, samples2 = gaussian_mixtures.randomTestMCSamples(ndim=5, nMCSamples=2)
             g = plots.getSubplotPlotter(subplot_size=4)
             g.plots_3d([samples1, samples2], [['x0', 'x1', 'x2'], ['x3', 'x4', 'x2']], nx=2);
@@ -2548,7 +2548,7 @@ class GetDistPlotter(object):
         """
         if fname is None: fname = os.path.basename(sys.argv[0]).replace('.py', '')
         if tag: fname += '_' + tag
-        if not '.' in fname: fname += '.' + getdist.default_plot_output
+        if not '.' in fname: fname += '.' + my_getdist.default_plot_output
         if adir is not None and os.sep not in fname and '/' not in fname: fname = os.path.join(adir, fname)
         adir = os.path.dirname(fname)
         if adir and not os.path.exists(adir): os.makedirs(adir)

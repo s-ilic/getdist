@@ -4,7 +4,7 @@ import decimal
 import os
 from io import BytesIO
 import numpy as np
-from getdist import paramnames
+from my_getdist import paramnames
 import six
 import tempfile
 

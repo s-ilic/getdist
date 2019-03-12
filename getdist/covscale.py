@@ -2,7 +2,7 @@ from __future__ import print_function
 import sys
 import fnmatch
 import os
-from getdist import covmat
+from my_getdist import covmat
 
 if len(sys.argv) < 4:
     print('covscale rescales parameter(s) in all .covmat files in a directory and outputs to another directory')
